@@ -438,7 +438,7 @@ void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
       !ShouldShowFirstLaunchNotification() ||
       !profile_->GetPrefs()->GetBoolean(
           brave_rewards::prefs::kBraveRewardsEnabled)) {
-    StartFirstLaunchNotificationTimer();
+    MaybeStartFirstLaunchNotificationTimer();
     return;
   }
 
@@ -466,6 +466,9 @@ void AdsServiceImpl::RemoveFirstLaunchNotification() {
       rewards_service->GetNotificationService();
   rewards_notification_service->DeleteNotification(
       kRewardsNotificationAdsLaunch);
+
+  profile_->GetPrefs()->SetBoolean(
+    prefs::kBraveAdsHasDeletedFirstLaunchNotification, true);
 }
 
 void AdsServiceImpl::ShowFirstLaunchNotification() {
@@ -482,6 +485,18 @@ void AdsServiceImpl::ShowFirstLaunchNotification() {
 
   profile_->GetPrefs()->SetBoolean(
     prefs::kBraveAdShouldShowFirstLaunchNotification, false);
+}
+
+void AdsServiceImpl::MaybeStartFirstLaunchNotificationTimer() {
+  bool has_deleted_notification =
+      profile_->GetPrefs()->GetBoolean(
+          prefs::kBraveAdsHasDeletedFirstLaunchNotification);
+
+  if (has_deleted_notification) {
+    return;
+  }
+
+  StartFirstLaunchNotificationTimer();
 }
 
 void AdsServiceImpl::StartFirstLaunchNotificationTimer() {
