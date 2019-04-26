@@ -578,7 +578,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_TRUE(InstallTrackingProtectionExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
       0ULL);
-  GURL url = embedded_test_server()->GetURL("google.com", kAdBlockTestPage);
+  GURL url = embedded_test_server()->GetURL("searx.me", kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -604,7 +604,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_TRUE(InstallTrackingProtectionExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
       0ULL);
-  GURL url = embedded_test_server()->GetURL("google.com", kAdBlockTestPage);
+  GURL url = embedded_test_server()->GetURL("searx.me", kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
