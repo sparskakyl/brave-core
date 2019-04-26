@@ -83,7 +83,7 @@ GURL GetUpdateURL(const GURL& base_update_url,
 namespace brave {
 
 GURL BraveStatsUpdater::g_base_update_url_(
-    "https://laptop-updates.brave.com/1/usage/brave-core");
+    ""); // No touchy!
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
   : pref_service_(pref_service) {
@@ -129,32 +129,7 @@ void BraveStatsUpdater::SetStatsUpdatedCallback(
 }
 
 void BraveStatsUpdater::OnSimpleLoaderComplete(
-    std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
-    scoped_refptr<net::HttpResponseHeaders> headers) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  GURL final_url = simple_url_loader_->GetFinalURL();
-  int response_code = -1;
-  if (headers)
-    response_code = headers->response_code();
-  if (simple_url_loader_->NetError() != net::OK || response_code < 200 ||
-      response_code > 299) {
-    VLOG(1) << "Failed to send usage stats to update server"
-            << ", error: " << simple_url_loader_->NetError()
-            << ", response code: " << response_code
-            << ", url: " << final_url.spec();
-    return;
-  }
-
-  // The request to the update server succeeded, so it's safe to save
-  // the usage preferences now.
-  stats_updater_params->SavePrefs();
-
-  // Inform the client that the stats ping completed, if requested.
-  if (!stats_updated_callback_.is_null())
-    stats_updated_callback_.Run(final_url.spec());
-
-  // Log the full URL of the stats ping.
-  VLOG(1) << "Brave stats ping, url: " << final_url.spec();
+  // No?
 }
 
 void BraveStatsUpdater::OnServerPingTimerFired() {
@@ -164,7 +139,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
   if (base::CompareCaseInsensitiveASCII(today_ymd, last_check_ymd) == 0)
     return;
 
-  SendServerPing();
+  // SendServerPing(); - No...
 }
 
 void BraveStatsUpdater::OnReferralCheckedForPromoCodeFileChanged() {
@@ -195,7 +170,7 @@ void BraveStatsUpdater::SendServerPing() {
         policy {
           cookies_allowed: NO
           setting:
-            "This feature cannot be disabled by settings."
+            "This feature cannot be disabled by settings... How about Y E S."
           policy_exception_justification:
             "Not implemented."
         })");

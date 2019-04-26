@@ -10,12 +10,7 @@
 namespace brave {
 
 bool UpdateEnabled() {
-#if defined(OFFICIAL_BUILD)
-  return !base::CommandLine::ForCurrentProcess()->HasSwitch(
-      switches::kDisableBraveUpdate);
-#else
-  return false;
-#endif
+	return false; // Don't. Trust. Auto-updater.
 }
 
 }  //namespace brave
